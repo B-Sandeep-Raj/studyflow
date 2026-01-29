@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyFlow - Smart Study Tracking</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Auth Pages -->
+  <div id="authContainer" class="auth-container hidden">
+    <!-- Login Page -->
+    <div id="loginPage" class="auth-page active">
+      <div class="auth-card">
+        <div class="auth-header">
+          <h1>
+            <i class="fas fa-book-open"></i> StudyFlow
+          </h1>
+          <p>Smart Study Tracking Platform</p>
+        </div>
+
+        <form id="loginForm" class="auth-form">
+          <div class="form-group">
+            <label for="loginEmail">Email</label>
+            <input
+              type="email"
+              id="loginEmail"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input
+              type="password"
+              id="loginPassword"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">
+            Login
+          </button>
+        </form>
+
+        <p class="auth-footer">
+          Don't have an account?
+          <a href="#" onclick="switchToRegister()"
+            >Register here</a
+          >
+        </p>
+      </div>
+    </div>
+
+    <!-- Register Page -->
+    <div id="registerPage" class="auth-page">
+      <div class="auth-card">
+        <div class="auth-header">
+          <h1>
+            <i class="fas fa-book-open"></i> StudyFlow
+          </h1>
+          <p>Create your account</p>
+        </div>
+
+        <form id="registerForm" class="auth-form">
+          <div class="form-group">
+            <label for="registerName">Full Name</label>
+            <input
+              type="text"
+              id="registerName"
+              placeholder="Enter your name"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="registerEmail">Email</label>
+            <input
+              type="email"
+              id="registerEmail"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="registerPassword">Password</label>
+            <input
+              type="password"
+              id="registerPassword"
+              placeholder="At least 6 characters"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">
+            Register
+          </button>
+        </form>
+
+        <p class="auth-footer">
+          Already have an account?
+          <a href="#" onclick="switchToLogin()">Login here</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div id="appContainer" class="app-container hidden">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>
+          <i class="fas fa-book-open"></i> StudyFlow
+        </h2>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#" onclick="switchPage('dashboard')" class="nav-item active">
+          <i class="fas fa-chart-line"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="/timer/" class="nav-item">
+          <i class="fas fa-hourglass-start"></i>
+          <span>Timer</span>
+        </a>
+        <a href="#" onclick="switchPage('subjects')" class="nav-item">
+          <i class="fas fa-book"></i>
+          <span>Subjects</span>
+        </a>
+        <a href="#" onclick="switchPage('logs')" class="nav-item">
+          <i class="fas fa-history"></i>
+          <span>Study Logs</span>
+        </a>
+        <a href="#" onclick="switchPage('analytics')" class="nav-item">
+          <i class="fas fa-chart-pie"></i>
+          <span>Analytics</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn-theme" onclick="toggleTheme()">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button class="btn-logout" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="content-header">
+        <h1 id="pageTitle">Dashboard</h1>
+        <div class="header-actions">
+          <span id="userGreeting" class="greeting"></span>
+        </div>
+      </div>
+
+      <!-- Dashboard Page -->
+      <div id="dashboardPage" class="page active">
+        <div class="stats-grid">
+          <div class="stat-card glass">
+            <div class="stat-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-content">
+              <h3>Total Hours</h3>
+              <p id="totalHours" class="stat-value">0 hrs</p>
+            </div>
+          </div>
+
+          <div class="stat-card glass">
+            <div class="stat-icon">
+              <i class="fas fa-fire"></i>
+            </div>
+            <div class="stat-content">
+              <h3>Current Streak</h3>
+              <p id="streakCount" class="stat-value">0 days</p>
+            </div>
+          </div>
+
+          <div class="stat-card glass">
+            <div class="stat-icon">
+              <i class="fas fa-book"></i>
+            </div>
+            <div class="stat-content">
+              <h3>Subjects</h3>
+              <p id="subjectCount" class="stat-value">0</p>
+            </div>
+          </div>
+
+          <div class="stat-card glass">
+            <div class="stat-icon">
+              <i class="fas fa-calendar-day"></i>
+            </div>
+            <div class="stat-content">
+              <h3>Today's Study</h3>
+              <p id="todayHours" class="stat-value">0 hrs</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="card glass">
+            <div class="card-header">
+              <h3>Weekly Progress</h3>
+            </div>
+            <div class="card-body">
+              <canvas id="weeklyChart"></canvas>
+            </div>
+          </div>
+
+          <div class="card glass">
+            <div class="card-header">
+              <h3>Subject-wise Time</h3>
+            </div>
+            <div class="card-body">
+              <canvas id="subjectChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="card glass">
+          <div class="card-header">
+            <h3>Quick Add Study Log</h3>
+            <button class="btn btn-sm btn-primary" onclick="openAddLogModal()">
+              <i class="fas fa-plus"></i> Add Log
+            </button>
+          </div>
+          <div class="card-body">
+            <form id="quickAddForm" class="quick-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Subject</label>
+                  <select id="quickSubject" required>
+                    <option value="">Select subject...</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Duration (minutes)</label>
+                  <input
+                    type="number"
+                    id="quickDuration"
+                    placeholder="45"
+                    min="1"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Topic</label>
+                <input
+                  type="text"
+                  id="quickTopic"
+                  placeholder="What did you study?"
+                  required
+                />
+              </div>
+
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-check"></i> Log Study Session
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subjects Page -->
+      <div id="subjectsPage" class="page">
+        <div class="page-header">
+          <button class="btn btn-primary" onclick="openAddSubjectModal()">
+            <i class="fas fa-plus"></i> Add Subject
+          </button>
+        </div>
+
+        <div class="subjects-grid" id="subjectsGrid"></div>
+      </div>
+
+      <!-- Study Logs Page -->
+      <div id="logsPage" class="page">
+        <div class="page-header">
+          <div class="filter-group">
+            <select id="logFilter" onchange="filterLogs()">
+              <option value="all">All Logs</option>
+              <option value="today">Today</option>
+              <option value="week">This Week</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="logs-container" id="logsContainer"></div>
+      </div>
+
+      <!-- Analytics Page -->
+      <div id="analyticsPage" class="page">
+        <div class="analytics-grid">
+          <div class="card glass">
+            <div class="card-header">
+              <h3>Daily Study Pattern</h3>
+            </div>
+            <div class="card-body">
+              <canvas id="dailyChart"></canvas>
+            </div>
+          </div>
+
+          <div class="card glass">
+            <div class="card-header">
+              <h3>Subject Distribution</h3>
+            </div>
+            <div class="card-body">
+              <canvas id="distributionChart"></canvas>
+            </div>
+          </div>
+
+          <div class="card glass full-width">
+            <div class="card-header">
+              <h3>Study Statistics</h3>
+            </div>
+            <div class="card-body">
+              <div class="stats-table">
+                <div class="stat-row">
+                  <div class="stat-label">Average Daily Study</div>
+                  <div id="avgDaily" class="stat-number">0 hrs</div>
+                </div>
+                <div class="stat-row">
+                  <div class="stat-label">Total Sessions</div>
+                  <div id="totalSessions" class="stat-number">0</div>
+                </div>
+                <div class="stat-row">
+                  <div class="stat-label">Most Active Subject</div>
+                  <div id="activeSubject" class="stat-number">N/A</div>
+                </div>
+                <div class="stat-row">
+                  <div class="stat-label">Weekly Average</div>
+                  <div id="weeklyAvg" class="stat-number">0 hrs</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add Subject Modal -->
+  <div id="addSubjectModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add New Subject</h2>
+        <button class="modal-close" onclick="closeModal('addSubjectModal')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <form id="addSubjectForm" class="modal-form">
+        <div class="form-group">
+          <label for="subjectName">Subject Name</label>
+          <input
+            type="text"
+            id="subjectName"
+            placeholder="e.g., Mathematics"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="subjectColor">Color</label>
+          <div class="color-picker">
+            <input
+              type="color"
+              id="subjectColor"
+              value="#3498db"
+            />
+            <span id="colorPreview" style="background-color: #3498db"></span>
+          </div>
+        </div>
+
+        <div class="modal-buttons">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('addSubjectModal')">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">Add Subject</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Study Log Modal -->
+  <div id="addLogModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Log Study Session</h2>
+        <button class="modal-close" onclick="closeModal('addLogModal')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <form id="addLogForm" class="modal-form">
+        <div class="form-group">
+          <label for="logSubject">Subject</label>
+          <select id="logSubject" required>
+            <option value="">Select a subject...</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="logDuration">Duration (minutes)</label>
+            <input
+              type="number"
+              id="logDuration"
+              placeholder="45"
+              min="1"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="logStatus">Status</label>
+            <select id="logStatus" required>
+              <option value="Completed">Completed</option>
+              <option value="Pending">Pending</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="logTopic">Topic</label>
+          <input
+            type="text"
+            id="logTopic"
+            placeholder="What did you study?"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="logDate">Date</label>
+          <input type="date" id="logDate" required />
+        </div>
+
+        <div class="modal-buttons">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('addLogModal')">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">Log Session</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/charts.js"></script>
+</body>
+</html>

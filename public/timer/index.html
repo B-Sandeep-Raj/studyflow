@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Timer - StudyFlow</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <link rel="stylesheet" href="css/timer.css" />
+</head>
+  <link rel="stylesheet" href="css/DESKTOP-FIX.css" />
+</head>
+<body>
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <div class="status-info">
+      <span id="statusIndicator" class="status-dot idle"></span>
+      <span id="statusText" class="status-text">Ready to Study</span>
+    </div>
+    <div class="status-controls">
+      <a href="/" class="back-link" title="Back to Dashboard">
+        <i class="fas fa-arrow-left"></i> Dashboard
+      </a>
+      <button id="themToggle" class="theme-btn" title="Toggle Dark Mode">
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Timer Card -->
+    <div class="timer-card">
+      <!-- Timer Display Section (Analog + Digital) -->
+      <div class="timer-display-section">
+        <!-- Analog Clock -->
+        <div class="clock-container">
+          <svg class="clock-ring" viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="95" class="ring-bg" />
+            <circle cx="100" cy="100" r="95" class="ring-progress" id="ringProgress" />
+
+            <g id="clockHands">
+              <line id="hourHand" x1="100" y1="100" x2="100" y2="72" stroke="#111" stroke-width="4" stroke-linecap="round" />
+              <line id="minuteHand" x1="100" y1="100" x2="100" y2="54" stroke="#111" stroke-width="3" stroke-linecap="round" />
+              <line id="secondHand" x1="100" y1="106" x2="100" y2="34" stroke="#ef4444" stroke-width="2" stroke-linecap="round" />
+            </g>
+          </svg>
+          <div class="center-dot"></div>
+        </div>
+
+        <!-- Digital Timer Display (UNCHANGED) -->
+        <div class="digital-timer" id="digitalTimer">
+          <div class="timer-display">
+            <span id="hours" class="timer-unit">00</span>
+            <span class="timer-separator">:</span>
+            <span id="minutes" class="timer-unit">00</span>
+            <span class="timer-separator">:</span>
+            <span id="seconds" class="timer-unit">00</span>
+          </div>
+          <div class="timer-label">HOURS : MINUTES : SECONDS</div>
+        </div>
+      </div>
+
+      <!-- Control Buttons (directly below timer) -->
+      <div class="control-buttons">
+        <button id="startBtn" class="btn btn-start" title="Start Timer">
+          <i class="fas fa-play"></i> Start
+        </button>
+        <button id="pauseBtn" class="btn btn-pause hidden" title="Pause Timer">
+          <i class="fas fa-pause"></i> Pause
+        </button>
+        <button id="stopBtn" class="btn btn-stop" title="Stop & Save">
+          <i class="fas fa-stop"></i> Stop
+        </button>
+      </div>
+
+      <!-- Subject & Notes Input -->
+      <div class="input-section">
+        <div class="input-row">
+          <label for="subjectInput">Subject</label>
+          <input type="text" id="subjectInput" placeholder="Subject (e.g., Math)" value="General Study" />
+        </div>
+        <div class="input-row">
+          <label for="notesInput">Notes</label>
+          <textarea id="notesInput" rows="2" placeholder="Add brief notes about this session..."></textarea>
+        </div>
+      </div>
+
+      <!-- Stats Section -->
+      <div class="stats-section">
+        <div class="stat-item">
+          <span class="stat-label">Sessions Today</span>
+          <span id="sessionsToday" class="stat-value">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Total Time</span>
+          <span id="totalTimeToday" class="stat-value">0h 0m</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Avg Session</span>
+          <span id="avgSession" class="stat-value">0m</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Session History -->
+    <div class="history-card">
+      <div class="card-header">
+        <h2>📚 Study History</h2>
+        <button id="clearHistoryBtn" class="btn-icon" title="Clear all sessions">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
+
+      <div id="sessionsList" class="sessions-list">
+        <p class="empty-state">No study sessions yet. Start studying!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Mini Timer (Inactive Tab) -->
+  <div id="miniTimer" class="mini-timer hidden">
+    <div class="mini-timer-content">
+      <div class="mini-display">
+        <span id="miniHours" class="mini-unit">00</span>:<span
+          id="miniMinutes"
+          class="mini-unit"
+          >00</span
+        >:<span id="miniSeconds" class="mini-unit">00</span>
+      </div>
+      <div class="mini-status">
+        <span class="mini-dot studying"></span>
+        <span>Studying...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Session Summary Modal -->
+  <div id="summaryModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>📊 Session Summary</h2>
+        <button class="modal-close" id="closeModal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="summary-item">
+          <span class="summary-label">Subject:</span>
+          <span id="summarySubject" class="summary-value">-</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Duration:</span>
+          <span id="summaryDuration" class="summary-value">-</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Start Time:</span>
+          <span id="summaryStart" class="summary-value">-</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">End Time:</span>
+          <span id="summaryEnd" class="summary-value">-</span>
+        </div>
+        <div class="summary-item full">
+          <span class="summary-label">Notes:</span>
+          <p id="summaryNotes" class="summary-value">-</p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="saveSummaryBtn" class="btn btn-primary">
+          <i class="fas fa-save"></i> Save Session
+        </button>
+        <button id="closeSummaryBtn" class="btn btn-secondary">
+          <i class="fas fa-times"></i> Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/timer.js"></script>
+</body>
+</html>
