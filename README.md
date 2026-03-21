@@ -298,18 +298,13 @@ git push heroku main
 - Leaderboards
 - Mobile app
 
-## 📄 License
-
-MIT License - Feel free to use this project for your own purposes.
-
 ## 👨‍💻 Author
 
-Created as a full-stack study tracking application with modern UI/UX principles.
+**B. Sandeep Raj**  
+Aspiring Software Developer passionate about building real-world applications using MERN Stack and Java.
 
-## 🤝 Support
-
-For issues or questions, check the code comments and API documentation in the files.
-
+🔗 GitHub: https://github.com/B-Sandeep-Raj  
+🌐 Portfolio: https://sandeeprajportfolio.netlify.app/
 ---
 
 **Happy Studying! 📚✨**
