@@ -86,21 +86,8 @@ studyflow/
    npm install
    ```
 
-3. **Configure environment variables**
-   
-   Edit `.env` file:
-   ```
-   PORT=5000
-   MONGODB_URI=mongodb://localhost:27017/studyflow
-   JWT_SECRET=your_jwt_secret_key_here_change_in_production
-   JWT_EXPIRATION=7d
-   NODE_ENV=development
-   ```
 
-   For MongoDB Atlas (cloud):
-   ```
-   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/studyflow
-   ```
+
 
 4. **Start MongoDB**
    
